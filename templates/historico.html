@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Relatórios - Forno Nobre</title>
+</head>
+<body class="bg-light">
+
+    <div class="d-flex" id="wrapper">
+        <div id="sidebar-wrapper">
+            <div class="p-4 border-bottom border-secondary d-flex align-items-center">
+                <div class="logo-sidebar me-2">
+                    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+                </div>
+                <span class="fs-5 fw-bold text-white"></span>
+            </div>
+            
+            <div class="list-group list-group-flush flex-grow-1 mt-3">
+                <a href="/" class="list-group-item list-group-item-action bg-transparent text-white border-0 py-3 op-hover">
+                    <i class="fas fa-box me-3"></i> Estoque Atual
+                </a>
+                
+                {% if usuario.nivel == 'admin' %}
+                <a href="{{ url_for('historico') }}" class="list-group-item list-group-item-action bg-transparent active-nav border-0 py-3">
+                    <i class="fas fa-history me-3"></i> Relatórios
+                </a>
+                {% endif %}
+
+                <a href="{{ url_for('perfil') }}" class="list-group-item list-group-item-action bg-transparent text-white border-0 py-3 op-hover">
+                    <i class="fas fa-user me-3"></i> Meu Perfil
+                </a>
+            </div>
+
+            <div class="p-3">
+                <a href="/logout" class="btn btn-outline-danger w-100 btn-sm">
+                    <i class="fas fa-sign-out-alt me-2"></i> Sair
+                </a>
+            </div>
+        </div>
+
+        <div id="page-content-wrapper" class="w-100">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 px-4 shadow-sm mb-4">
+                <div class="container-fluid">
+                    <div class="d-flex align-items-center">
+                        <h5 class="m-0 fw-bold text-dark d-flex align-items-center">
+                            <i class="fas fa-scroll text-warning me-2"></i> Histórico de Auditoria
+                        </h5>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <div class="text-end me-3 d-none d-md-block">
+                            <div class="fw-bold text-dark mb-0" style="font-size: 0.9rem;">{{ session['user_nome'] }}</div>
+                            <div class="text-muted small" style="font-size: 0.75rem;">{{ usuario.nivel | upper }}</div>
+                        </div>
+                        <img src="/static/uploads/{{ usuario.foto if usuario.foto else 'default.png' }}" class="rounded-circle border border-2 border-white shadow-sm" width="40" height="40" style="object-fit: cover;">
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container-fluid px-4">
+                <div class="card border-0 shadow-sm overflow-hidden">
+                    <div class="card-header bg-white border-0 py-4 px-4 d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="m-0 fw-bold text-dark">Registros de Movimentação</h5>
+                            <small class="text-muted">Acompanhe quem, quando e o que mudou no estoque</small>
+                        </div>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="window.print()">
+                            <i class="fas fa-print me-2"></i>Imprimir Relatório
+                        </button>
+                    </div>
+                    
+<div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="bg-light">
+            <tr class="text-muted small fw-bold">
+                <th class="border-0 px-4 py-3">DATA/HORA</th>
+                <th class="border-0 py-3">OPERADOR</th>
+                <th class="border-0 py-3">PRODUTO</th>
+                <th class="border-0 py-3 text-center">AÇÃO</th>
+                <th class="border-0 py-3 text-center">QTD</th> <th class="border-0 py-3 text-center">SALDO PÓS</th> <th class="border-0 py-3 px-4">OBSERVAÇÃO</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white">
+            {% for log in logs %}
+            <tr>
+                <td class="px-4 text-muted small">
+                    {{ log.data.strftime('%d/%m/%Y %H:%M') }}
+                </td>
+                <td>
+                    <button type="button" class="btn btn-link p-0 text-dark fw-bold text-decoration-none shadow-none" data-bs-toggle="modal" data-bs-target="#modalUser{{ log.id }}" style="font-size: 0.9rem;">
+                        <i class="far fa-user-circle text-muted me-1"></i> 
+                        {{ log.usuario_completo.username if log.usuario_completo else log.usuario_nome }}
+                    </button>
+                </td>
+                <td class="fw-bold text-dark">{{ log.produto_nome }}</td>
+                <td class="text-center">
+                    <span class="badge 
+                        {% if log.tipo == 'entrada' %}bg-success-subtle text-success border border-success
+                        {% elif log.tipo == 'saida' %}bg-danger-subtle text-danger border border-danger
+                        {% elif log.tipo == 'cadastro' %}bg-primary-subtle text-primary border border-primary
+                        {% elif log.tipo == 'exclusao' %}bg-dark text-white
+                        {% else %}bg-light text-dark{% endif %} px-2 py-1" style="font-size: 0.7rem; min-width: 80px;">
+                        {{ log.tipo | upper }}
+                    </span>
+                </td>
+                
+                <td class="text-center fw-bold text-dark">
+                    {{ log.quantidade }}
+                    <span class="unidade-medida">{{ log.unidade if log.unidade else '' }}</span>
+                </td>
+
+                <td class="text-center fw-bold text-primary">
+                    {{ log.saldo_final if log.saldo_final != None else '--' }}
+                    <span class="unidade-medida">{{ log.unidade if log.unidade and log.saldo_final != None else '' }}</span>
+                </td>
+
+                <td class="px-4 small text-muted italic">
+                    {{ log.observacao if log.observacao else '-' }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% for log in logs %}
+    <div class="modal fade" id="modalUser{{ log.id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-lg border-0" style="border-radius: 20px;">
+                <div class="modal-header border-0 pb-0 pt-4 px-4">
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center px-4 pb-5">
+                    <div class="mb-3">
+                        {% if log.usuario_completo %}
+                            <img src="/static/uploads/{{ log.usuario_completo.foto if log.usuario_completo.foto else 'default.png' }}" class="rounded-circle shadow-sm border border-4 border-white" width="110" height="110" style="object-fit: cover;">
+                        {% else %}
+                            <div class="rounded-circle bg-secondary text-white d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 110px; height: 110px; font-size: 3rem;">
+                                {{ log.usuario_nome[0].upper() if log.usuario_nome else '?' }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <h4 class="fw-bold text-dark mb-1">{{ log.usuario_completo.username if log.usuario_completo else log.usuario_nome }}</h4>
+                    
+                    <span class="badge bg-light text-muted border mb-4">
+                        {% if log.usuario_completo and log.usuario_completo.nivel == 'admin' %} 
+                            <i class="fas fa-crown text-warning me-1"></i> ADMINISTRADOR 
+                        {% else %} 
+                            FUNCIONÁRIO 
+                        {% endif %}
+                    </span>
+                    
+                    <div class="bg-light rounded-4 p-3 text-start mx-2" style="font-size: 0.9rem;">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted small"><i class="fas fa-fingerprint me-2"></i> ID:</span>
+                            <span class="fw-bold">#{{ log.usuario_completo.id if log.usuario_completo else '?' }}</span>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted small"><i class="fas fa-id-card me-2"></i> CPF:</span>
+                            <span class="fw-bold">{{ log.usuario_completo.cpf if log.usuario_completo and log.usuario_completo.cpf else 'Não informado' }}</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted small"><i class="fas fa-envelope me-2"></i> E-mail:</span>
+                            <span class="fw-bold" style="font-size: 0.8rem;">{{ log.usuario_completo.email if log.usuario_completo and log.usuario_completo.email else 'Não informado' }}</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted small"><i class="fas fa-phone me-2"></i> Telefone:</span>
+                            <span class="fw-bold text-success">{{ log.usuario_completo.telefone if log.usuario_completo and log.usuario_completo.telefone else 'Não informado' }}</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted small"><i class="fas fa-calendar-day me-2"></i> Nascimento:</span>
+                            <span class="fw-bold">
+                                {% if log.usuario_completo and log.usuario_completo.data_nascimento %}
+                                    {{ log.usuario_completo.data_nascimento.split('-')|reverse|join('/') }}
+                                {% else %}
+                                    Não informado
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-0 border-top pt-2 mt-2">
+                            <span class="text-muted small"><i class="fas fa-clock me-2"></i> Último Acesso:</span>
+                            <span class="text-primary fw-bold" style="font-size: 0.8rem;">
+                                {% if log.usuario_completo and log.usuario_completo.ultimo_acesso %}
+                                    {{ log.usuario_completo.ultimo_acesso.strftime('%d/%m/%Y %H:%M') }}
+                                {% else %}
+                                    ---
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

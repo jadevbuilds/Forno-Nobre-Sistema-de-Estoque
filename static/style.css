@@ -1,0 +1,490 @@
+/* --- CONFIGURAÇÕES GLOBAIS E RESETS --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --sidebar-bg: #2d1b15;       /* Marrom Escuro */
+    --accent: #ffa726;           /* Dourado Trigo */
+    --bg-main: #f4f7f6;          /* Cinza de fundo */
+    --text-dark: #2d3436;
+    --text-muted: #636e72;
+    --white: #ffffff;
+    --success: #198754;
+    --danger: #e74c3c;
+    --radius: 10px;
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100%;
+    height: 100%;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
+}
+
+/* --- ESTRUTURA DO DASHBOARD --- */
+#wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+#sidebar-wrapper {
+    min-width: 260px;
+    max-width: 260px;
+    background-color: var(--sidebar-bg) !important;
+    color: white;
+    z-index: 1000;
+    transition: all 0.3s;
+}
+
+#page-content-wrapper {
+    flex: 1;
+    width: 100%;
+    background-color: var(--bg-main);
+    overflow-x: hidden;
+}
+
+/* --- Centralização Forçada para Logo Grande --- */
+
+.logo-sidebar {
+    width: 300px !important; /* O tamanho que você exigiu */
+    height: auto;
+    
+    /* CENTRALIZAÇÃO PARA ELEMENTOS MAIORES QUE O PAI */
+    display: block !important;
+    margin-left: 50% !important;
+    transform: translateX(-17%) !important; /* Move a logo de volta para o centro exato */
+    
+    position: relative;
+    left: 0;
+    
+    /* Limpeza */
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+.logo-sidebar img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.4));
+}
+
+/* Ajuste no contêiner pai (onde a logo está dentro) */
+.sidebar-header, #sidebar-wrapper .d-flex {
+    display: flex;
+    flex-direction: column; /* Coloca os itens em coluna */
+    align-items: center;    /* Centraliza os itens da coluna */
+    width: 100%;
+    padding: 10px 0;
+}
+
+.active-nav {
+    background-color: rgba(255, 167, 38, 0.1) !important;
+    border-left: 4px solid #ffa726 !important;
+    color: #ffa726 !important;
+    font-weight: 600;
+}
+
+.op-hover:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    padding-left: 2rem !important;
+    transition: 0.3s;
+}
+
+.navbar {
+    height: 70px;
+    background-color: var(--white) !important;
+    border-bottom: 1px solid #edf2f7;
+}
+
+/* --- TELAS DE LOGIN E REGISTRO (AUTH) --- */
+.auth-page {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 100vh !important;
+    width: 100vw !important;
+    padding: 20px !important;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                url('https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=2072') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+}
+
+.login-card, .register-card {
+    background: rgba(255, 255, 255, 0.98);
+    padding: 2rem; /* Compactado um pouco */
+    border-radius: 28px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 420px;
+    margin: auto !important;
+}
+
+.rounded-circle.bg-light {
+    background-color: #f0fdf4 !important;
+    width: 65px !important;
+    height: 65px !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.btn-register {
+    background-color: var(--success) !important;
+    color: white !important;
+    border: none !important;
+    padding: 12px !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-register:hover {
+    background-color: #146c43 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(25, 135, 84, 0.3);
+}
+
+/* --- AJUSTE COMPACTO PARA O PERFIL (PARA ELIMINAR SCROLL) --- */
+.profile-card {
+    padding: 1.2rem !important; /* Espaço interno reduzido */
+    max-width: 420px !important;
+    margin: 10px auto !important;
+}
+
+.profile-img-container {
+    width: 90px !important; /* Foto menor */
+    height: 90px !important;
+    margin: 0 auto 10px !important;
+}
+
+.profile-card .form-control {
+    padding: 7px 12px !important; /* Inputs mais finos */
+    font-size: 0.85rem !important;
+    background-color: #f8f9fa !important;
+    border: none !important;
+}
+
+.profile-card label {
+    font-size: 0.7rem !important;
+    margin-bottom: 3px !important;
+    font-weight: 700;
+}
+
+.profile-card .mb-3 {
+    margin-bottom: 0.7rem !important; /* Aproxima os campos */
+}
+
+.profile-card h4 {
+    font-size: 1.1rem !important;
+    margin-bottom: 2px !important;
+}
+
+.activity-banner {
+    padding: 6px !important;
+    font-size: 0.7rem !important;
+    margin-bottom: 10px !important;
+    border-radius: 8px;
+}
+
+/* --- COMPONENTES GERAIS --- */
+.card {
+    border: none;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.bg-success-subtle { background-color: #e8f8f0 !important; color: #1e7e34 !important; border: 1px solid #c3e6cb; }
+.bg-danger-subtle { background-color: #fceaea !important; color: #c0392b !important; border: 1px solid #f5c6cb; }
+
+@media (max-width: 992px) {
+    #sidebar-wrapper { margin-left: -260px !important; }
+    #sidebar-wrapper.toggled { margin-left: 0 !important; }
+}
+
+/* Estilo para as Fichas Técnicas */
+.bg-warning-subtle {
+    background-color: #fff9db !important;
+    color: #f59f00 !important;
+    border: 1px solid #ffe066;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.card h5 {
+    color: var(--sidebar-bg);
+}
+
+.list-unstyled strong {
+    color: var(--text-dark);
+}
+
+.solicitacoes-link {
+    transition: all 0.3s ease;
+    padding: 8px 15px;
+    border-radius: 10px;
+    /* Adicionamos uma borda transparente por padrão para evitar que o layout "pule" ao aparecer a listra */
+    border-right: 4px solid transparent; 
+}
+
+.solicitacoes-link:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+    /* A cor amarela (yellow-ish) do ícone de envelope é geralmente #ffc107 */
+    border-right: 4px solid #ffc107; 
+    border-radius: 10px 0 0 10px; /* Ajusta o arredondamento para a borda direita ficar reta */
+}
+
+.solicitacoes-link:hover i {
+    color: #ffc107 !important;
+}
+
+/* Estilo para a borda marrom ao clicar (foco) */
+    .custom-focus:focus-within {
+        border: 2px solid #4e342e !important;
+        background-color: #ffffff !important; /* Fica branco ao clicar para destacar */
+    }
+    
+    .custom-input:focus {
+        box-shadow: none !important;
+        outline: none !important;
+    }
+
+    /* Estilo para a borda marrom ao clicar (foco) em qualquer campo */
+    .custom-focus:focus-within {
+        border: 2px solid #4e342e !important;
+        background-color: #ffffff !important;
+        transition: 0.3s;
+    }
+    
+    .custom-input:focus {
+        box-shadow: none !important;
+        outline: none !important;
+    }
+
+    /* Ajuste para o campo de data não quebrar o estilo */
+    input[type="date"] {
+        cursor: pointer;
+    }
+
+    /* ANIMAÇÃO DO BOTÃO (O que você pediu) */
+    .btn-nobre {
+        background-color: #4e342e;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        transition: all 0.3s ease; /* Faz a transição ser suave */
+    }
+
+    .btn-nobre:hover {
+        background-color: #3d2924; /* Marrom um pouco mais escuro */
+        color: #f8f9fa;
+        transform: translateY(-3px); /* Botão sobe 3 pixels */
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra mais profunda */
+    }
+
+    .btn-nobre:active {
+        transform: translateY(-1px); /* Efeito de "apertar" o botão */
+    }
+
+    /* --- Estilização da Tela de Login (Refinada) --- */
+
+/* Centralização do container principal na tela */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* A caixa branca do formulário */
+.login-box {
+    background-color: #ffffff;
+    border-radius: 12px; /* Bordas mais suaves */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2); /* Sombra mais profunda para destacar */
+    overflow: hidden; /* Garante que o cabeçalho marrom siga a borda arredondada */
+    width: 100%;
+    max-width: 400px; /* Largura máxima ideal */
+}
+
+/* --- Ajuste Final para Logo Flutuante no Login --- */
+
+.login-header {
+    background-color: #4b312b !important;
+    padding: 40px 20px !important;
+    text-align: center;
+}
+
+.login-logo-container {
+    display: block;
+    margin: 0 auto;
+}
+
+.login-header img {
+    /* Mesmo tamanho e efeito da sidebar */
+    width: 300px !important; /* Ajuste o tamanho aqui */
+    height: auto;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    
+    /* O efeito que você gostou */
+    filter: drop-shadow(0px 6px 12px rgba(0,0,0,0.5)) !important;
+    object-fit: contain;
+}
+
+/* Ajuste extra no cabeçalho para garantir que nada atrapalhe a centralização */
+.login-header {
+    background-color: #4e342e; /* Marrom padrão */
+    padding: 40px 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2) !important;
+    position: relative;
+    z-index: 1;
+}
+
+/* Corpo do Formulário (parte branca) */
+.login-body {
+    padding: 40px;
+}
+
+/* Estilização dos campos de entrada (Inputs) */
+.form-group label {
+    font-weight: 600;
+    color: #5d4037; /* Marrom médio para os rótulos */
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* Ícones dentro dos inputs */
+.input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #a1887f; /* Cor suave para o ícone */
+}
+
+.login-body input {
+    width: 100%;
+    padding: 12px 15px 12px 45px; /* Espaço para o ícone à esquerda */
+    border: 1px solid #d7ccc8;
+    border-radius: 8px;
+    background-color: #fafafa;
+    transition: all 0.3s ease;
+}
+
+/* Efeito de foco no input */
+.login-body input:focus {
+    border-color: #a1887f;
+    box-shadow: 0 0 0 3px rgba(161, 136, 127, 0.2);
+    outline: none;
+}
+
+/* Botão Entrar */
+.btn-login {
+    background-color: #5d4037; /* Marrom do botão */
+    color: #ffffff;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Espaço entre texto e ícone de seta */
+}
+
+/* Efeito Hover no botão */
+.btn-login:hover {
+    background-color: #4e342e; /* Escurece um pouco ao passar o mouse */
+}
+
+/* Link de cadastro na parte inferior */
+.login-footer {
+    text-align: center;
+    padding: 0 30px 20px 30px;
+    font-size: 0.9rem;
+    color: #795548;
+}
+
+.login-footer a {
+    color: #5d4037;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+/* --- Ajuste Final das Frases do Cabeçalho de Login --- */
+
+.login-header p.mt-2 {
+    color: #ffffff !important;   /* Branco Total */
+    font-size: 1.4rem !important; /* Tamanho maior */
+    font-weight: 700 !important;  /* Negrito */
+    margin-top: 15px !important;
+    margin-bottom: 5px !important;
+}
+
+.login-header p.text-white-50 {
+    color: #ffffff !important;    /* Força o branco na frase de baixo também */
+    opacity: 0.9;                 /* Deixa quase 100% visível */
+    font-size: 0.95rem !important;
+    font-weight: 400 !important;
+}
+
+/* Garante que o container da logo não tenha margens estranhas */
+.login-logo-container {
+    margin-bottom: 10px !important;
+}
+
+/* Estilo para as unidades de medida nas tabelas de histórico */
+.unidade-medida {
+    font-size: 0.7rem;      /* Menor que o número */
+    color: #95a5a6;         /* Cinza claro */
+    font-weight: 500;       /* Peso médio */
+    text-transform: lowercase; /* Sempre em minúsculo para padrão kg, un */
+    margin-left: 2px;
+}
+
+/* Garante que o texto de instrução abaixo do título fique branco */
+.card-header p, 
+.card-header span,
+.register-container p {
+    color: #ffffff !important;
+    opacity: 0.9; /* Deixa um pouco suave, mas ainda legível */
+}
+
+.badge-notificacao {
+    position: relative;
+    top: -5px;
+    right: -2px;
+    box-shadow: 0 0 5px rgba(220, 53, 69, 0.5);
+}

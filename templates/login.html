@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Forno Nobre</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-page">
+<body class="auth-page">
+    <div class="login-box">
+        <div class="login-header">
+            <div class="login-logo-container"> 
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo Forno Nobre">
+            </div>
+            <p class="mt-2 mb-0 fw-bold">Bem-vindo de volta!</p>
+            <p class="text-white-50 small mb-0">Gestão de Inventário e Auditoria</p>
+        </div>
+
+        <div class="login-body">
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                {% for message in messages %}
+                  <div class="alert alert-danger py-2 small border-0 shadow-sm mb-4">
+                      <i class="fas fa-exclamation-circle me-2"></i> {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <form method="POST" class="text-start">
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-muted text-uppercase">Usuário</label>
+                    <div class="input-group custom-focus" style="background-color: #f8f9fa; border-radius: 10px; transition: 0.3s; border: 2px solid transparent;">
+                        <span class="input-group-text bg-transparent border-0">
+                            <i class="fas fa-user text-muted small"></i>
+                        </span>
+                        <input type="text" name="username" class="form-control border-0 bg-transparent custom-input" 
+                               placeholder="Nome de usuário ou CPF" required>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-muted text-uppercase">Acesso</label>
+                    <div class="input-group custom-focus" style="background-color: #f8f9fa; border-radius: 10px; transition: 0.3s; border: 2px solid transparent;">
+                        <span class="input-group-text bg-transparent border-0">
+                            <i class="fas fa-lock text-muted small"></i>
+                        </span>
+                        <input type="password" name="senha" id="senha" class="form-control border-0 bg-transparent custom-input" 
+                               placeholder="Sua senha" required>
+                        <span class="input-group-text bg-transparent border-0" style="cursor: pointer;" onclick="toggleSenha()">
+                            <i class="fas fa-eye text-muted small" id="toggleIcon"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-nobre w-100 shadow-sm py-2 fw-bold">
+                    ENTRAR NO SISTEMA <i class="fas fa-sign-in-alt ms-2"></i>
+                </button>
+
+                <div class="text-center mt-4">
+                    <p class="small text-muted mb-0">Não possui uma conta? 
+                        <a href="/registrar" class="fw-bold text-decoration-none" style="color: #4e342e;">Cadastre-se</a>
+                    </p>
+                </div>
+            </form>
+        </div> </div> </body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // Se o usuário começar a digitar números, ele aplica a máscara de CPF
+        $('input[name="username"]').keyup(function() {
+            var val = $(this).val();
+            if(!isNaN(val.charAt(0))) {
+                $(this).mask('000.000.000-00');
+            } else {
+                $(this).unmask();
+            }
+        });
+    });
+</script>
+
+<script>
+function toggleSenha() {
+    const inputSenha = document.getElementById('senha');
+    const icon = document.getElementById('toggleIcon');
+    if (inputSenha.type === 'password') {
+        inputSenha.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        inputSenha.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
+</script>
+
+</body>
+</html>
