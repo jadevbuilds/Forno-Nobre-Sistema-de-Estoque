@@ -8,40 +8,59 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>Inventário - Forno Nobre</title>
 </head>
+
 <body class="bg-light">
+    <!-- bg-light aplica um fundo claro usando Bootstrap -->
 
     <div class="d-flex" id="wrapper">
+        <!-- d-flex ativa Flexbox (layout flexível)
+        wrapper é o container principal da página -->
+
+        <!-- SIDEBAR (MENU LATERAL) -->
         <div id="sidebar-wrapper">
+
             <div class="p-4 border-bottom border-secondary d-flex align-items-center">
+                <!-- Área superior do menu com padding e borda -->
+
                 <div class="logo-sidebar me-2">
                     <img src="/static/img/logo.png" alt="Logo">
+                    <!-- Logo do sistema -->
                 </div>
+
                 <span class="fs-5 fw-bold text-white"></span>
             </div>
-            
+
+            <!-- LISTA DE LINKS -->
             <div class="list-group list-group-flush flex-grow-1 mt-3">
+                <!-- list-group cria menu vertical -->
+
                 <a href="/" class="list-group-item list-group-item-action bg-transparent active-nav border-0 py-3">
                     <i class="fas fa-box me-3"></i> Estoque Atual
+                    <!-- Link para página principal -->
                 </a>
-            
 
+                <!-- CONDIÇÃO: só aparece se for ADMIN -->
                 {% if usuario.nivel == 'admin' %}
                 <a href="/historico" class="list-group-item list-group-item-action bg-transparent text-white border-0 py-3 op-hover">
                     <i class="fas fa-history me-3"></i> Relatórios
                 </a>
                 {% endif %}
-                
-<a href="/perfil" class="list-group-item list-group-item-action bg-transparent text-white border-0 py-3 op-hover">
-    <i class="fas fa-user me-3"></i> Meu Perfil
-    
-    {% if contagem_pendentes > 0 %}
-    <span class="badge rounded-pill bg-danger float-end mt-1">
-        {{ contagem_pendentes }}
-    </span>
-    {% endif %}
-</a>
+
+                <!-- PERFIL -->
+                <a href="/perfil" class="list-group-item list-group-item-action bg-transparent text-white border-0 py-3 op-hover">
+                    <i class="fas fa-user me-3"></i> Meu Perfil
+
+                    {% if contagem_pendentes > 0 %}
+                    <!-- Se houver notificações -->
+                    <span class="badge rounded-pill bg-danger float-end mt-1">
+                        {{ contagem_pendentes }}
+                        <!-- Mostra quantidade -->
+                    </span>
+                    {% endif %}
+                </a>
             </div>
 
+            <!-- BOTÃO SAIR -->
             <div class="p-3">
                 <a href="/logout" class="btn btn-outline-danger w-100 btn-sm">
                     <i class="fas fa-sign-out-alt me-2"></i> Sair
@@ -49,188 +68,181 @@
             </div>
         </div>
 
+        <!-- CONTEÚDO PRINCIPAL -->
         <div id="page-content-wrapper" class="w-100">
-            
+
+            <!-- NAVBAR SUPERIOR -->
             <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 px-4 shadow-sm mb-4">
                 <div class="container-fluid">
+
+                    <!-- CAMPO DE BUSCA -->
                     <div class="d-flex align-items-center">
                         <i class="fas fa-search text-muted me-3"></i>
-                        <input type="text" id="inputBusca" class="form-control border-0 bg-light" placeholder="Pesquisar produto..." style="width: 300px; border-radius: 20px;">
+
+                        <input type="text" id="inputBusca"
+                               class="form-control border-0 bg-light"
+                               placeholder="Pesquisar produto..."
+                               style="width: 300px; border-radius: 20px;">
+                        <!-- Campo que permite buscar itens em tempo real -->
                     </div>
 
+                    <!-- ÁREA DIREITA -->
                     <div class="d-flex align-items-center">
-                        <div class="me-4 position-relative" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalAlertas">
+
+                        <!-- ALERTAS -->
+                        <div class="me-4 position-relative"
+                             style="cursor: pointer;"
+                             data-bs-toggle="modal"
+                             data-bs-target="#modalAlertas">
+
                             <i class="fas fa-bell text-muted fs-5"></i>
+
                             {% if alertas %}
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                            <!-- Se houver alertas -->
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                 {{ alertas|length }}
+                                <!-- Quantidade de alertas -->
                             </span>
                             {% endif %}
                         </div>
 
                         <div class="vr me-4 opacity-25"></div>
-                        
+                        <!-- Linha divisória -->
+
+                        <!-- USUÁRIO -->
                         <div class="d-flex align-items-center">
+
                             <div class="text-end me-3 d-none d-md-block">
-                                <div class="fw-bold text-dark mb-0" style="font-size: 0.9rem;">{{ usuario.username }}</div>
-                                <div class="text-muted small" style="font-size: 0.75rem;">{{ usuario.nivel|upper }}</div>
+                                <div class="fw-bold text-dark">{{ usuario.username }}</div>
+                                <div class="text-muted small">{{ usuario.nivel|upper }}</div>
                             </div>
-                            <img src="/static/uploads/{{ usuario.foto if usuario.foto else 'default.png' }}" class="rounded-circle border border-2 border-white shadow-sm" width="40" height="40" style="object-fit: cover;">
+
+                            <img src="/static/uploads/{{ usuario.foto if usuario.foto else 'default.png' }}"
+                                 class="rounded-circle border border-2 border-white shadow-sm"
+                                 width="40" height="40">
+                            <!-- Foto do usuário -->
                         </div>
                     </div>
                 </div>
             </nav>
 
+            <!-- CONTEÚDO -->
             <div class="container-fluid px-4">
+
+                <!-- MENSAGENS DO SISTEMA -->
                 {% with messages = get_flashed_messages(with_categories=true) %}
                   {% if messages %}
                     {% for category, message in messages %}
-                      <div class="alert alert-{{ category }} alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
-                        <i class="fas {% if category == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} me-2"></i> 
+
+                      <div class="alert alert-{{ category }} alert-dismissible fade show">
                         {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                       </div>
+
                     {% endfor %}
                   {% endif %}
                 {% endwith %}
 
                 <div class="row">
+
+                    <!-- FORMULÁRIO DE NOVO PRODUTO -->
                     <div class="col-xl-4 col-lg-5">
-                        <div class="card border-0 shadow-sm mb-4" style="border-radius: 15px;">
-                            <div class="card-body p-4">
-                                <h5 class="card-title fw-bold mb-3 d-flex align-items-center">
-                                    <i class="fas fa-plus-circle text-success me-2"></i> Novo Produto
-                                </h5>
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+
+                                <h5>Novo Produto</h5>
+
                                 <form action="/adicionar_insumo" method="POST">
-                                    <div class="mb-3">
-                                        <label class="form-label text-muted small fw-bold">NOME DO ITEM</label>
-                                        <input type="text" name="nome" class="form-control bg-light border-0" placeholder="Ex: Bolo de Chocolate" required>
-                                    </div>
-                                    <div class="row g-2 mb-3">
-                                        <div class="col-6">
-                                            <label class="form-label text-muted small fw-bold">QTD INICIAL</label>
-                                            <input type="number" step="0.1" name="quantidade" class="form-control bg-light border-0" required>
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="form-label text-muted small fw-bold">QTD MÍNIMA</label>
-                                            <input type="number" step="0.1" name="minimo" class="form-control bg-light border-0" required>
-                                        </div>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="form-label text-muted small fw-bold">UNIDADE DE MEDIDA</label>
-                                        <select name="unidade" class="form-select bg-light border-0">
-                                            <option value="kg">Quilos (kg)</option>
-                                            <option value="un">Unidades (un)</option>
-                                            <option value="lt">Litros (lt)</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="btn btn-success w-100 fw-bold py-2" style="border-radius: 10px;">
-                                        SALVAR NO ESTOQUE
-                                    </button>
+
+                                    <input type="text" name="nome" placeholder="Nome" required>
+
+                                    <input type="number" name="quantidade" required>
+
+                                    <input type="number" name="minimo" required>
+
+                                    <select name="unidade">
+                                        <option value="kg">kg</option>
+                                        <option value="un">un</option>
+                                        <option value="lt">lt</option>
+                                    </select>
+
+                                    <button type="submit">Salvar</button>
                                 </form>
                             </div>
                         </div>
                     </div>
 
+                    <!-- TABELA -->
                     <div class="col-xl-8 col-lg-7">
-                        <div class="card border-0 shadow-sm" style="border-radius: 15px;">
-                            <div class="card-header bg-white border-0 py-4 px-4">
-                                <h5 class="m-0 fw-bold text-dark">Gestão de Inventário</h5>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle mb-0">
-                                    <thead class="bg-light">
-                                        <tr>
-                                            <th class="border-0 px-4 py-3 text-muted small fw-bold">ITEM</th>
-                                            <th class="border-0 py-3 text-muted small fw-bold text-center">ESTOQUE</th>
-                                            <th class="border-0 py-3 text-muted small fw-bold text-center">MOVIMENTAÇÃO</th>
-                                            <th class="border-0 py-3 text-muted small fw-bold text-center">AÇÕES</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for item in insumos %}
-                                        <tr class="item-row">
-                                            <td class="px-4">
-                                                <div class="fw-bold text-dark">{{ item.nome }}</div>
-                                                <small class="text-muted">Mínimo: {{ item.quantidade_minima }} {{ item.unidade_medida }}</small>
-                                            </td>
-                                            <td class="text-center">
-                                                <span class="badge {% if item.quantidade_atual < item.quantidade_minima %}bg-danger{% else %}bg-success-subtle text-success border border-success{% endif %} px-3 py-2">
-                                                    {{ item.quantidade_atual }} {{ item.unidade_medida }}
-                                                </span>
-                                            </td>
-                                            <td style="width: 250px;">
-                                                <form action="/movimentar/{{ item.id }}" method="POST">
-                                                    <div class="d-flex justify-content-center gap-2 mb-2">
-                                                        <input type="number" step="0.1" name="quantidade" class="form-control form-control-sm text-center bg-light border-0" style="width: 70px" placeholder="0.0" required>
-                                                        <button name="tipo" value="entrada" class="btn btn-sm btn-outline-success border-2"><i class="fas fa-plus"></i></button>
-                                                        <button name="tipo" value="saida" class="btn btn-sm btn-outline-danger border-2"><i class="fas fa-minus"></i></button>
-                                                    </div>
-                                                    <input type="text" name="motivo" class="form-control form-control-sm bg-light border-0" placeholder="Observação" style="font-size: 0.75rem;">
-                                                </form>
-                                            </td>
-                                            <td class="text-center">
-                                                <form action="{{ url_for('excluir_insumo', id=item.id) }}" method="POST" style="display:inline;">
-                                                    <button type="submit" class="btn btn-link text-danger p-0" onclick="return confirm('Excluir {{ item.nome }}?')">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        <table class="table">
+
+                            <tbody>
+                                {% for item in insumos %}
+                                <tr class="item-row">
+
+                                    <td>{{ item.nome }}</td>
+
+                                    <td>{{ item.quantidade_atual }}</td>
+
+                                    <td>
+                                        <!-- MOVIMENTAÇÃO -->
+                                        <form action="/movimentar/{{ item.id }}" method="POST">
+
+                                            <input type="number" name="quantidade" required>
+
+                                            <button name="tipo" value="entrada">+</button>
+                                            <button name="tipo" value="saida">-</button>
+
+                                        </form>
+                                    </td>
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="modalAlertas" tabindex="-1" aria-hidden="true">
+    <!-- MODAL DE ALERTAS -->
+    <div class="modal fade" id="modalAlertas">
+
         <div class="modal-dialog">
-            <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
-                <div class="modal-header bg-danger text-white border-0" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                    <h5 class="modal-title fw-bold">Alertas de Estoque</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-0">
-                    {% if alertas %}
-                        <div class="list-group list-group-flush">
-                            {% for alerta in alertas %}
-                            <div class="list-group-item d-flex justify-content-between align-items-center py-3">
-                                <div>
-                                    <div class="fw-bold text-dark">{{ alerta.nome }}</div>
-                                    <small class="text-danger">Abaixo do mínimo: {{ alerta.quantidade_minima }}</small>
-                                </div>
-                                <span class="badge bg-danger rounded-pill">{{ alerta.quantidade_atual }}</span>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="text-center py-5">
-                            <i class="fas fa-check-circle text-success fs-1 mb-3"></i>
-                            <p class="text-muted">Estoque em dia!</p>
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-light w-100" data-bs-dismiss="modal">Fechar</button>
+            <div class="modal-content">
+
+                <div class="modal-body">
+
+                    {% for alerta in alertas %}
+                        <p>{{ alerta.nome }}</p>
+                    {% endfor %}
+
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- SCRIPT BOOTSTRAP -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
+        // BUSCA EM TEMPO REAL
         document.getElementById('inputBusca').addEventListener('keyup', function() {
+
             let busca = this.value.toLowerCase();
+            // Pega o texto digitado
+
             document.querySelectorAll('.item-row').forEach(linha => {
+
                 let nome = linha.querySelector('.fw-bold').textContent.toLowerCase();
+                // Pega o nome do item
+
+                // Se incluir → mostra, senão → esconde
                 linha.style.display = nome.includes(busca) ? '' : 'none';
             });
         });
     </script>
+
 </body>
 </html>
