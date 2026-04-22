@@ -23,5 +23,4 @@ O **Forno Nobre** é uma aplicação web desenvolvida para facilitar o controle 
 ## 📦 Como rodar o projeto
 
 1. Clone o repositório:
-   ```bash
-git clone https://github.com/jadevbuilds/Forno-Nobre-Sistema-de-Estoque.git
+   ```bash git clone https://github.com/jadevbuilds/Forno-Nobre-Sistema-de-Estoque.git
