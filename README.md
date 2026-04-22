@@ -24,3 +24,23 @@ O **Forno Nobre** é uma aplicação web desenvolvida para facilitar o controle 
 
 1. Clone o repositório:
 git clone https://github.com/jadevbuilds/Forno-Nobre-Sistema-de-Estoque.git
+
+## 📸 Demonstração Visual
+
+Abaixo, algumas capturas de tela do sistema em funcionamento:
+
+### 🔐 Tela de Acesso (Login)
+Interface limpa e segura para autenticação de usuários, diferenciando acessos entre Administradores e Funcionários.
+![Login](Screenshots/LoginPage.jpeg)
+
+### 📦 Controle de Estoque
+Visualização completa dos insumos, unidades de medida e alertas de estoque crítico.
+![Estoque](Screenshots/StockPage.jpeg)
+
+### 👤 Perfil e Notificações Administrativas
+Área personalizada onde o Administrador visualiza notificações de solicitações pendentes em tempo real.
+![Perfil](Screenshots/MyProfile.jpeg)
+
+### 📝 Histórico de Movimentações
+Registro detalhado de todas as operações realizadas, garantindo a auditoria do estoque.
+![Histórico](Screenshots/HistoryPage.jpeg)
