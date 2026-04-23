@@ -8,205 +8,94 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body class="auth-page">
-    <!-- "auth-page" é uma classe personalizada do seu CSS.
-    Normalmente usada para estilizar páginas de autenticação (login/cadastro),
-    como centralizar o formulário e aplicar um fundo específico -->
-
+<body class="auth-page">
     <div class="login-box">
-        <!-- Container principal do login.
-        Ele funciona como uma "caixa" que agrupa tudo:
-        logo, textos e formulário -->
-
         <div class="login-header">
-            <!-- Parte superior da caixa (cabeçalho visual) -->
-
-            <div class="login-logo-container">
-                <!-- Área onde a logo fica posicionada -->
-
+            <div class="login-logo-container"> 
                 <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo Forno Nobre">
-                <!-- A imagem é carregada usando Flask (url_for),
-                garantindo que o caminho esteja correto dentro da pasta /static -->
             </div>
-
             <p class="mt-2 mb-0 fw-bold">Bem-vindo de volta!</p>
-            <!-- Texto principal.
-            mt-2 = margem em cima
-            mb-0 = remove margem embaixo
-            fw-bold = texto em negrito -->
-
-            <p class="text-white-50 small mb-0">
-                Gestão de Inventário e Auditoria
-            </p>
-            <!-- Subtexto com cor mais suave (menos destaque) -->
+            <p class="text-white-50 small mb-0">Gestão de Inventário e Auditoria</p>
         </div>
 
         <div class="login-body">
-            <!-- Corpo da caixa onde fica o formulário -->
-
-            <!-- BLOCO DE MENSAGENS DO FLASK -->
             {% with messages = get_flashed_messages() %}
-            <!-- Pega mensagens enviadas pelo back-end (ex: erro de login) -->
-
               {% if messages %}
-              <!-- Verifica se existe alguma mensagem -->
-
                 {% for message in messages %}
-                <!-- Percorre todas as mensagens -->
-
                   <div class="alert alert-danger py-2 small border-0 shadow-sm mb-4">
-                      <!-- Caixa de alerta do Bootstrap
-                      alert-danger = cor vermelha (erro)
-                      shadow-sm = sombra leve -->
-
-                      <i class="fas fa-exclamation-circle me-2"></i>
-                      <!-- Ícone de alerta -->
-
-                      {{ message }}
-                      <!-- Aqui aparece a mensagem vinda do Flask -->
+                      <i class="fas fa-exclamation-circle me-2"></i> {{ message }}
                   </div>
-
                 {% endfor %}
               {% endif %}
             {% endwith %}
 
-            <!-- FORMULÁRIO -->
             <form method="POST" class="text-start">
-                <!-- method="POST" envia os dados de forma segura (não aparece na URL) -->
-
-                <!-- CAMPO USUÁRIO -->
                 <div class="mb-3">
-
-                    <label class="form-label small fw-bold text-muted text-uppercase">
-                        Usuário
-                    </label>
-                    <!-- Label é o "nome" do campo -->
-
-                    <div class="input-group custom-focus">
-                        <!-- input-group junta ícone + campo -->
-
+                    <label class="form-label small fw-bold text-muted text-uppercase">Usuário</label>
+                    <div class="input-group custom-focus" style="background-color: #f8f9fa; border-radius: 10px; transition: 0.3s; border: 2px solid transparent;">
                         <span class="input-group-text bg-transparent border-0">
                             <i class="fas fa-user text-muted small"></i>
                         </span>
-                        <!-- Ícone de usuário -->
-
-                        <input type="text" 
-                               name="username" 
-                               class="form-control custom-input"
-                               placeholder="Nome de usuário ou CPF" 
-                               required>
-                        <!-- Campo de entrada
-                        name="username" → nome enviado ao backend
-                        required → impede envio vazio -->
+                        <input type="text" name="username" class="form-control border-0 bg-transparent custom-input" 
+                               placeholder="Nome de usuário ou CPF" required>
                     </div>
                 </div>
 
-                <!-- CAMPO SENHA -->
                 <div class="mb-4">
-
-                    <label class="form-label small fw-bold text-muted text-uppercase">
-                        Acesso
-                    </label>
-
-                    <div class="input-group custom-focus">
-
+                    <label class="form-label small fw-bold text-muted text-uppercase">Acesso</label>
+                    <div class="input-group custom-focus" style="background-color: #f8f9fa; border-radius: 10px; transition: 0.3s; border: 2px solid transparent;">
                         <span class="input-group-text bg-transparent border-0">
                             <i class="fas fa-lock text-muted small"></i>
                         </span>
-                        <!-- Ícone de cadeado -->
-
-                        <input type="password" 
-                               name="senha" 
-                               id="senha"
-                               class="form-control custom-input"
-                               placeholder="Sua senha" 
-                               required>
-                        <!-- type="password" oculta os caracteres -->
-
-                        <span onclick="toggleSenha()">
-                            <!-- Quando clicar, chama a função JS -->
-
-                            <i class="fas fa-eye" id="toggleIcon"></i>
-                            <!-- Ícone que muda (olho aberto/fechado) -->
+                        <input type="password" name="senha" id="senha" class="form-control border-0 bg-transparent custom-input" 
+                               placeholder="Sua senha" required>
+                        <span class="input-group-text bg-transparent border-0" style="cursor: pointer;" onclick="toggleSenha()">
+                            <i class="fas fa-eye text-muted small" id="toggleIcon"></i>
                         </span>
                     </div>
                 </div>
 
-                <!-- BOTÃO -->
-                <button type="submit" class="btn btn-nobre w-100">
-                    ENTRAR NO SISTEMA
+                <button type="submit" class="btn btn-nobre w-100 shadow-sm py-2 fw-bold">
+                    ENTRAR NO SISTEMA <i class="fas fa-sign-in-alt ms-2"></i>
                 </button>
-                <!-- type="submit" envia o formulário -->
 
-                <!-- LINK DE CADASTRO -->
                 <div class="text-center mt-4">
-                    <p>Não possui uma conta?
-                        <a href="/registrar">Cadastre-se</a>
+                    <p class="small text-muted mb-0">Não possui uma conta? 
+                        <a href="/registrar" class="fw-bold text-decoration-none" style="color: #4e342e;">Cadastre-se</a>
                     </p>
                 </div>
             </form>
-        </div>
-    </div>
+        </div> </div> </body>
 
-    <!-- jQuery: biblioteca para manipular HTML mais fácil -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Plugin de máscara (formata CPF automaticamente) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-
-    <script>
-        // Executa quando a página termina de carregar
-        $(document).ready(function(){
-
-            // Fica "escutando" o campo username enquanto o usuário digita
-            $('input[name="username"]').keyup(function() {
-
-                var val = $(this).val();
-                // Pega o valor digitado
-
-                // Verifica se o primeiro caractere é número
-                if(!isNaN(val.charAt(0)) && val.length > 0) {
-
-                    // Se for número → aplica máscara de CPF
-                    $(this).mask('000.000.000-00');
-
-                } else {
-
-                    // Se não for → remove a máscara
-                    $(this).unmask();
-                }
-            });
-        });
-
-        // FUNÇÃO PARA MOSTRAR/OCULTAR SENHA
-        function toggleSenha() {
-
-            const inputSenha = document.getElementById('senha');
-            // Pega o campo de senha
-
-            const icon = document.getElementById('toggleIcon');
-            // Pega o ícone do olho
-
-            if (inputSenha.type === 'password') {
-                // Se estiver oculto
-
-                inputSenha.type = 'text';
-                // Mostra a senha
-
-                icon.classList.replace('fa-eye', 'fa-eye-slash');
-                // Troca o ícone
-
+<script>
+    $(document).ready(function(){
+        // Se o usuário começar a digitar números, ele aplica a máscara de CPF
+        $('input[name="username"]').keyup(function() {
+            var val = $(this).val();
+            if(!isNaN(val.charAt(0))) {
+                $(this).mask('000.000.000-00');
             } else {
-                // Se estiver visível
-
-                inputSenha.type = 'password';
-                // Oculta novamente
-
-                icon.classList.replace('fa-eye-slash', 'fa-eye');
+                $(this).unmask();
             }
-        }
-    </script>
+        });
+    });
+</script>
+
+<script>
+function toggleSenha() {
+    const inputSenha = document.getElementById('senha');
+    const icon = document.getElementById('toggleIcon');
+    if (inputSenha.type === 'password') {
+        inputSenha.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        inputSenha.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
+</script>
 
 </body>
 </html>
